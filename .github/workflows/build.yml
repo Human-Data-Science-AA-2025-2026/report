@@ -2,9 +2,9 @@ name: Build Report
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 permissions:
   contents: write
@@ -31,7 +31,7 @@ jobs:
           path: main.pdf
 
       - name: Create release and upload PDF
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: report-${{ github.run_number }}

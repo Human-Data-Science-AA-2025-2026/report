@@ -1,11 +1,30 @@
 \documentclass{article}
 \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[backend=biber, style=numeric]{biblatex}
+\addbibresource{references.bib}
 
-\title{HDS}
+\title{The Invisible Exodus:\\
+\large Measuring the Undercount of Young Italian Emigrants\\
+through Mirror Statistics}
 \author{Marzia De Maina, Enrico Ferraiolo, Daniele Romanella \\
 \small\texttt{\{marzia.demaina, enrico.ferraiolo2, daniele.romanella\}@studio.unibo.it}}
+\date{\today}
 
 \begin{document}
+
     \maketitle
-    \section{Introduction}
+    \tableofcontents
+    \newpage
+
+    \input{inc/10-introduction}
+    \input{inc/11-background}
+    \input{inc/12-data}
+    \input{inc/13-methodology}
+    \input{inc/14-results}
+    \input{inc/15-discussion}
+    \input{inc/16-conclusion}
+
+    \newpage
+    \printbibliography
 \end{document}

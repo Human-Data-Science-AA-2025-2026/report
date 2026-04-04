@@ -1,7 +1,63 @@
 \section{Data}\label{sec:data}
 
 \subsection{ISTAT: Emigration Flows from the Italian Side}
+\label{subsec:data_istat}
+The Italian side of the comparison is drawn from the \textit{Cancellazioni
+anagrafiche per trasferimento di residenza all'estero} dataset, published
+annually by ISTAT platform~\cite{istat_iscrizioni}.
+Each record represents an individual who has formally deregistered from an Italian
+municipal registry and declared a foreign country as their new place of residence.
 
-\subsection{Eurostat: Emigration Flows from the Destination Side}
+This measurement mechanism is structurally tied to a human decision: a person
+must actively initiate the deregistration procedure, either in person at their
+home municipality or, since 2012, through the AIRE online portal.
+As a result, the ISTAT series measures not emigration itself, but the
+\emph{administratively visible} fraction of emigration those individuals
+who chose to make their departure official.
+
+For this study, we filter the dataset to retain only records with Italian
+citizenship, total sex, all
+age classes, covering the years from 2018 to 2022 and the
+eight destination countries for which a corresponding Eurostat observation is
+available.
+
+\subsection{Eurostat: Immigration Flows from the Destination Side}
+\label{subsec:data_eurostat}
+
+The destination-country perspective is drawn from the Eurostat dataset
+\texttt{MIGR\_IMM1CTZ} (\textit{Immigration by age group, sex and
+citizenship})~\cite{eurostat_migr_imm1ctz}.
+This dataset aggregates immigration records submitted by each member state to
+Eurostat under Regulation (EC) No.~862/2007~\cite{ec_regulation_862_2007},
+which standardises the definition of a long-term migrant as a person
+establishing residence for at least twelve months.
+
+For each country-year pair, we extract the total count of Italian citizens recorded as new immigrants,
+using the completed-years age definition, all ages,
+and both sexes combined.
+The dataset covers eight destination countries: Austria, Denmark, Finland,
+France, Germany, Norway, Spain, and Sweden, for the period from 2018 to 2022.
+Two initially candidate countries (Poland and Portugal) returned empty
+observations for all years in this dataset, indicating that those national
+statistical offices did not submit disaggregated citizenship data to Eurostat
+for the reference period.
+This absence is itself informative: it reflects the uneven quality of migration
+reporting across European systems.
 
 \subsection{Dataset Construction and Alignment}
+\label{subsec:data_alignment}
+
+The two series are aligned on the (country, year) key, producing a panel of
+40~observations across 8~countries and 5~years (2018--2022).
+For each cell, we compute the raw gap as the difference between the Eurostat
+count and the ISTAT count.
+
+Two definitional asymmetries deserve explicit acknowledgment.
+First, ISTAT records the year of deregistration, while Eurostat records the
+year of arrival; for individuals who deregister with a delay, the two figures
+may fall in different calendar years, introducing a phase offset.
+Second, age disaggregation is not consistently available across destination
+countries in \texttt{MIGR\_IMM1CTZ}; consequently, the analysis covers the
+entire emigrant population rather than a specific age cohort.
+Both asymmetries introduce noise that works against detecting a gap, making
+any positive finding conservative rather than inflated.

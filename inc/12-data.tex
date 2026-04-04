@@ -59,5 +59,21 @@ may fall in different calendar years, introducing a phase offset.
 Second, age disaggregation is not consistently available across destination
 countries in \texttt{MIGR\_IMM1CTZ}; consequently, the analysis covers the
 entire emigrant population rather than a specific age cohort.
-Both asymmetries introduce noise that works against detecting a gap, making
-any positive finding conservative rather than inflated.
+
+\paragraph{Ensuring population comparability.}
+A non-trivial alignment problem concerns the scope of the two series.
+The ISTAT cancellation registry records \emph{all} individuals who
+deregister from an Italian municipality, regardless of citizenship:
+this includes foreign nationals previously resident in Italy who
+relocate abroad.
+Left unfiltered, the ISTAT figures would overcount Italian emigration
+by conflating two structurally different phenomena: the departure of
+Italian citizens and the onward migration of foreign residents.
+We address this by restricting the ISTAT extract to records with
+Italian citizenship, retaining only those individuals for whom the AIRE registration decision is actually
+relevant.
+On the Eurostat side, the \texttt{MIGR\_IMM1CTZ} dataset is natively filtered by the citizenship of the immigrant,
+so no additional transformation is required.
+After this filtering step, both series measure the same underlying
+population: Italian citizens crossing an international border and
+establishing residence abroad.

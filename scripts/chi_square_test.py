@@ -16,13 +16,6 @@ class MigrationChiSquareTest:
         """Ritorna i dati filtrati e ordinati per un singolo paese."""
         return self.df[self.df['DESTINATION_STATE'] == country_code].sort_values('YEAR')
 
-    def get_total_data(self) -> pd.DataFrame:
-        """Aggrega i dati di tutti i paesi per anno."""
-        return self.df.groupby('YEAR').agg({
-            'ISTAT_DELETED': 'sum',
-            'DEST_REGISTERED': 'sum'
-        }).reset_index()
-        
     def perform_test(self, label: str, data: pd.DataFrame) -> Dict[str, Any]:
         """
         Esegue il test del Chi Quadrato su un set di dati (paese o totale).
@@ -62,7 +55,7 @@ class MigrationChiSquareTest:
         }
 
     def test_all_countries(self) -> List[Dict[str, Any]]:
-        """Esegue il test per ogni paese e per il totale generale."""
+        """Esegue il test per ogni paese."""
         countries = sorted(self.df['DESTINATION_STATE'].unique())
         results = []
         
@@ -70,9 +63,6 @@ class MigrationChiSquareTest:
         for c in countries:
             results.append(self.perform_test(c, self.get_country_data(c)))
             
-        # Test generale (Totale)
-        results.append(self.perform_test("TOTALE", self.get_total_data()))
-        
         return results
 
     def get_summary_df(self) -> pd.DataFrame:

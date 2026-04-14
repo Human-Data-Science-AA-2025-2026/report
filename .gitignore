@@ -30,3 +30,7 @@
 *.iws
 *.ipr
 out/
+
+# Python
+__pycache__/
+.venv/

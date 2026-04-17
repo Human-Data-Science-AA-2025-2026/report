@@ -56,7 +56,7 @@ class MigrationWilcoxonTest:
         return {
             "test": "Shapiro-Wilk (normalita')",
             "stat": round(stat, 4),
-            "p_value": round(p, 6),
+            "p_value": p,
             "normal": p >= 0.05,
             "interpretation": (
                 "I gap seguono una distribuzione normale (p >= 0.05)"
@@ -115,5 +115,8 @@ if __name__ == "__main__":
         norm = tester.test_normality()
         print(f"Shapiro-Wilk: W={norm['stat']}, p={norm['p_value']}")
         print(f"  -> {norm['interpretation']}")
-        tester.get_summary_df().to_csv("../data/wilcoxon_results.csv")
+        
+        output_path = os.path.join(os.path.dirname(__file__), "../data/wilcoxon_results.csv")
+        tester.get_summary_df().to_csv(output_path, index=False)
+        print(f"\nRisultati salvati in: {output_path}")
 

@@ -1,79 +1,30 @@
-\section{Data}\label{sec:data}
+\section{Dati}\label{sec:data}
 
-\subsection{ISTAT: Emigration Flows from the Italian Side}
+\subsection{ISTAT: Flussi di Emigrazione dal Lato Italiano}
 \label{subsec:data_istat}
-The Italian side of the comparison is drawn from the \textit{Cancellazioni
-anagrafiche per trasferimento di residenza all'estero} dataset, published
-annually by ISTAT platform~\cite{istat_iscrizioni}.
-Each record represents an individual who has formally deregistered from an Italian
-municipal registry and declared a foreign country as their new place of residence.
-
-This measurement mechanism is structurally tied to a human decision: a person
-must actively initiate the deregistration procedure, either in person at their
-home municipality or, since 2012, through the AIRE online portal.
-As a result, the ISTAT series measures not emigration itself, but the
-\emph{administratively visible} fraction of emigration those individuals
-who chose to make their departure official.
-
-For this study, we filter the dataset to retain only records with Italian
-citizenship, total sex, all
-age classes, covering the years from 2018 to 2022 and the
-eight destination countries for which a corresponding Eurostat observation is
-available.
-
-\subsection{Eurostat: Immigration Flows from the Destination Side}
+Il lato italiano del confronto è tratto dal dataset \textit{Cancellazioni anagrafiche per trasferimento di residenza all'estero}, pubblicato annualmente dall'ISTAT~\cite{istat_iscrizioni}.
+Ogni record rappresenta un individuo che ha formalmente rimosso la propria residenza da un comune italiano e dichiarato un paese straniero come nuova dimora.
+Questo meccanismo di misurazione è strutturalmente legato a una decisione umana: una persona deve avviare attivamente la procedura di cancellazione, sia di persona presso il proprio comune di origine sia, dal 2012, attraverso il portale online dell'AIRE.
+Di conseguenza, la serie ISTAT non misura l'emigrazione in sé, ma la frazione \emph{amministrativamente visibile} dell'emigrazione: quegli individui che hanno scelto di ufficializzare la propria partenza.
+Per questo studio, abbiamo filtrato il dataset per mantenere solo i record relativi alla cittadinanza italiana, entrambi i sessi, tutte le classi di età, coprendo gli anni dal 2017 al 2021 e gli otto paesi di destinazione per i quali è disponibile una corrispondente osservazione Eurostat.
+\subsection{Eurostat: Flussi di Immigrazione dal Lato della Destinazione}
 \label{subsec:data_eurostat}
 
-The destination-country perspective is drawn from the Eurostat dataset
-\texttt{MIGR\_IMM1CTZ} (\textit{Immigration by age group, sex and
-citizenship})~\cite{eurostat_migr_imm1ctz}.
-This dataset aggregates immigration records submitted by each member state to
-Eurostat under Regulation (EC) No.~862/2007~\cite{ec_regulation_862_2007},
-which standardises the definition of a long-term migrant as a person
-establishing residence for at least twelve months.
+La prospettiva del paese di destinazione è tratta dal dataset Eurostat \texttt{MIGR\_IMM1CTZ} (\textit{Immigration by age group, sex and citizenship})~\cite{eurostat_migr_imm1ctz}.
+Questo dataset aggrega i record di immigrazione inviati da ciascuno stato membro a Eurostat ai sensi del Regolamento (CE) n. 862/2007~\cite{ec_regulation_862_2007}, che standardizza la definizione di migrante a lungo termine come una persona che stabilisce la residenza per almeno dodici mesi.
+Per ogni coppia paese-anno, abbiamo estratto il conteggio totale dei cittadini italiani registrati come nuovi immigrati.
+Il dataset copre otto paesi di destinazione: Austria, Danimarca, Finlandia, Francia, Germania, Norvegia, Spagna e Svezia, per il periodo dal 2017 al 2021.
 
-For each country-year pair, we extract the total count of Italian citizens recorded as new immigrants,
-using the completed-years age definition, all ages,
-and both sexes combined.
-The dataset covers eight destination countries: Austria, Denmark, Finland,
-France, Germany, Norway, Spain, and Sweden, for the period from 2018 to 2022.
-Two initially candidate countries (Poland and Portugal) returned empty
-observations for all years in this dataset, indicating that those national
-statistical offices did not submit disaggregated citizenship data to Eurostat
-for the reference period.
-This absence is itself informative: it reflects the uneven quality of migration
-reporting across European systems.
-
-\subsection{Dataset Construction and Alignment}
+\subsection{Costruzione e Allineamento del Dataset}
 \label{subsec:data_alignment}
 
-The two series are aligned on the (country, year) key, producing a panel of
-40~observations across 8~countries and 5~years (2018--2022).
-For each cell, we compute the raw gap as the difference between the Eurostat
-count and the ISTAT count.
-
-Two definitional asymmetries deserve explicit acknowledgment.
-First, ISTAT records the year of deregistration, while Eurostat records the
-year of arrival; for individuals who deregister with a delay, the two figures
-may fall in different calendar years, introducing a phase offset.
-Second, age disaggregation is not consistently available across destination
-countries in \texttt{MIGR\_IMM1CTZ}; consequently, the analysis covers the
-entire emigrant population rather than a specific age cohort.
-
-\paragraph{Ensuring population comparability.}
-A non-trivial alignment problem concerns the scope of the two series.
-The ISTAT cancellation registry records \emph{all} individuals who
-deregister from an Italian municipality, regardless of citizenship:
-this includes foreign nationals previously resident in Italy who
-relocate abroad.
-Left unfiltered, the ISTAT figures would overcount Italian emigration
-by conflating two structurally different phenomena: the departure of
-Italian citizens and the onward migration of foreign residents.
-We address this by restricting the ISTAT extract to records with
-Italian citizenship, retaining only those individuals for whom the AIRE registration decision is actually
-relevant.
-On the Eurostat side, the \texttt{MIGR\_IMM1CTZ} dataset is natively filtered by the citizenship of the immigrant,
-so no additional transformation is required.
-After this filtering step, both series measure the same underlying
-population: Italian citizens crossing an international border and
-establishing residence abroad.
+Le due serie sono allineate sulla chiave (paese, anno), producendo un panel di 40 osservazioni su 8 paesi e 5 anni (2017--2021).
+Per ogni cella, calcoliamo il gap grezzo come la differenza tra il conteggio Eurostat e il conteggio ISTAT.
+Due asimmetrie definitorie meritano un riconoscimento esplicito.
+In primo luogo, l'ISTAT registra l'anno di cancellazione, mentre Eurostat registra l'anno di arrivo; per gli individui che si cancellano con ritardo, le due cifre possono cadere in anni solari diversi.
+In secondo luogo, la disaggregazione per età non è disponibile in modo coerente tra i vari paesi in \texttt{MIGR\_IMM1CTZ}; di conseguenza, l'analisi copre l'intera popolazione emigrante.
+\paragraph{Garantire la comparabilità della popolazione.}
+Il registro delle cancellazioni ISTAT registra \emph{tutti} gli individui che si cancellano da un comune italiano, indipendentemente dalla cittadinanza: questo include cittadini stranieri precedentemente residenti in Italia che si trasferiscono all'estero.
+Abbiamo affrontato questo problema limitando l'estrazione ISTAT ai soli record con cittadinanza italiana, mantenendo solo quegli individui per i quali la decisione di iscrizione all'AIRE è effettivamente pertinente.
+Sul lato Eurostat, il dataset \texttt{MIGR\_IMM1CTZ} è nativamente filtrato per cittadinanza dell'immigrante.
+Dopo questa fase, entrambe le serie misurano la stessa popolazione sottostante: cittadini italiani che attraversano un confine internazionale e stabiliscono la propria residenza all'estero.

@@ -1,11 +1,18 @@
-\section{Methodology}\label{sec:methodology}
+\section{Metodologia}\label{sec:methodology}
 
-\subsection{Gap Definition}
+Il nostro approccio analitico è strutturato attorno a due domande di ricerca sequenziali, progettate per isolare sia l'entità che la dinamica temporale della sottostima.
+\subsection{Domanda di Ricerca 1: I volumi assoluti coincidono?}
+In primo luogo, abbiamo cercato di verificare se i dati pubblicati dall'ISTAT e i corrispondenti dati riportati da Eurostat (paesi di destinazione) siano fondamentalmente equivalenti.
+Ciò implica testare la presenza di un bias sistematico nel sistema di registrazione AIRE.
+Dato che le differenze tra le due serie non sono distribuite normalmente (come confermato dal test di Shapiro-Wilk, $p < 0.05$), abbiamo utilizzato il \textbf{Test dei ranghi con segno di Wilcoxon}.
+Definiamo il \emph{gap} per un dato paese di destinazione e anno come la differenza tra il conteggio Eurostat e il conteggio ISTAT.
+L'ipotesi nulla ($H_0$) afferma che il gap mediano è zero, il che significa che non c'è un bias sistematico e le due fonti misurano la stessa realtà sottostante.
+L'ipotesi alternativa ($H_1$) sostiene che il gap mediano è diverso da zero, indicando una sottostima sistematica da parte dell'amministrazione italiana.
+\subsection{Domanda di Ricerca 2: La distribuzione temporale coincide?}
+Se i volumi assoluti non coincidono — indicando che l'ISTAT sottostima sistematicamente i flussi — dobbiamo allora porci una domanda strutturale secondaria: i dati ISTAT riflettono almeno accuratamente l'\emph{andamento} dell'emigrazione nel tempo?
+In altre parole, sebbene la scala sia diversa, la distribuzione temporale dei flussi nel periodo di 5 anni (2017–2021) coincide?
 
-\subsection{Hypothesis Formulation}
-
-\subsection{Statistical Tests}
-
-\subsection{Falsification Strategy}
-
-\subsection{Data Harmonization}
+Per rispondere a questo, abbiamo applicato il \textbf{Test del Chi Quadrato per la bontà dell'adattamento}.
+Trattiamo i dati Eurostat come il modello atteso, rappresentando la reale distribuzione temporale dei flussi migratori.
+L'ipotesi nulla ($H_0$) afferma che la distribuzione temporale dei flussi ISTAT corrisponde alla distribuzione temporale del modello Eurostat nei 5 anni.
+L'ipotesi alternativa ($H_1$) afferma che le due distribuzioni differiscono significativamente, implicando che le registrazioni AIRE siano soggette a ritardi di fase o distorsioni esogene (es. arretrati burocratici) che le scollegano dall'evento migratorio reale.

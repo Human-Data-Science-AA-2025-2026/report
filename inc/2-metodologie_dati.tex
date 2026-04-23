@@ -1,0 +1,19 @@
+\section{Metodologie e Dati}\label{sec:metodologie_dati}
+
+\subsection{Costruzione e Filtraggio del Dataset}
+Il dataset finale è il risultato di un processo di fusione (merging) di 40 record relativi a otto paesi di destinazione chiave (Austria, Danimarca, Finlandia, Francia, Germania, Norvegia, Spagna, Svezia) per il quinquennio 2017-2021.
+I dati ISTAT riguardano le "Cancellazioni anagrafiche per trasferimento di residenza all'estero" \cite{istat_iscrizioni}.
+I dati speculari Eurostat sono stati estratti dal dataset \texttt{MIGR\_IMM1CTZ}, rigorosamente filtrato per includere solo gli immigrati con cittadinanza italiana \cite{eurostat_migr_imm1ctz}.
+Le due variabili cardine su cui verte l'analisi sono state definite come \textit{ISTAT\_DELETED} (emigrati lato Italia) e \textit{DEST\_REGISTERED} (immigrati lato paese di destinazione).
+
+\subsection{Framework Analitico e Validazione}
+L'infrastruttura di analisi è stata articolata su tre livelli di verifica rigorosa:
+\begin{enumerate}
+    \item \textbf{Verifica della Normalità (Test di Shapiro-Wilk):} Il calcolo preliminare sui residui (il gap tra Eurostat e ISTAT) ha restituito una statistica $W = 0.5978$ con un p-value di $2.9 \times 10^{-9}$ \cite{shapiro_wilk1965}.
+    Questo risultato rigetta categoricamente l'ipotesi di normalità dei dati ($p < 0.05$), confermando che il divario non segue una distribuzione gaussiana.
+    Di conseguenza, l'utilizzo di test non parametrici si è rivelato matematicamente obbligatorio.
+    \item \textbf{Test di Wilcoxon Signed-Rank:} È stato implementato per verificare se la mediana delle differenze appaiate (Eurostat - ISTAT) fosse uguale a zero (Assenza di bias) \cite{wilcoxon1945}.
+    Il test è stato applicato sia sul pannello globale ($N=40$) sia sui flussi aggregati per singolo paese ($N=8$).
+    \item \textbf{Test del Chi-Quadrato ($\chi^2$):} Per valutare l'allineamento temporale, abbiamo confrontato le frequenze osservate (ISTAT) con quelle attese basate sulle distribuzioni percentuali di Eurostat.
+    Questo test mira a stabilire se le partenze registrate in Italia abbiano almeno lo stesso andamento cronologico degli arrivi certificati all'estero, al netto della differenza nei volumi totali.
+\end{enumerate}

@@ -1,40 +1,65 @@
 \section{Risultati}\label{sec:risultati}
-Le analisi statistiche restituiscono un quadro inequivocabile: esiste una discrepanza sistematica e gravissima tra le due fonti di dati.
+Le analisi restituiscono un quadro coerente nelle due direzioni previste
+dai test: esiste un bias sistematico nei volumi e un disallineamento
+strutturato nella distribuzione temporale.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=\linewidth]{scripts/figures/fig1_trend}
-    \caption{Trend dei flussi migratori aggregati (2017-2021): l'area ombreggiata quantifica l'immenso divario tra le registrazioni Eurostat (superiori) e le cancellazioni ISTAT.}
+    \caption{Trend dei flussi migratori aggregati (2017-2021):
+    l'area ombreggiata quantifica il divario tra le registrazioni
+    Eurostat (superiori) e le cancellazioni ISTAT.}
     \label{fig:trend}
 \end{figure}
 
-\subsection{Sottoconteggio Assoluto: Test di Wilcoxon}
-I risultati del Wilcoxon Signed-Rank test smontano completamente l'ipotesi di errori casuali di rilevazione.
-Sul dataset globale ($N=40$), il test ha generato una statistica $W = 34.0$ con un p-value microscopico di $4.3 \times 10^{-7}$.
-In un campione di queste dimensioni, l'assenza di bias avrebbe prodotto un $W \approx 410$; il valore di 34.0 indica che quasi tutte le misurazioni Eurostat sono sistematicamente e pesantemente superiori a quelle ISTAT.
-Il \textbf{gap mediano globale} per singola combinazione (paese/anno) si attesta a \textbf{918.5} unità mancanti.
+\subsection{Entità del Bias: Test di Wilcoxon}
+Sul pannello globale ($N = 40$) il test restituisce $W = 34.0$ con
+$p = 4.3 \times 10^{-7}$. Il p-value è inferiore a tutte le soglie
+considerate ($\alpha = 0.05, 0.01, 0.001$): \textbf{si rigetta $H_0$}
+al livello più rigoroso. Il gap mediano per singola combinazione
+paese-anno è di $918.5$ unità.
 
-Aggregando i dati sull'intero quinquennio per ogni nazione (Test Per-Country, $N=8$), la statistica $W$ è crollata a \textbf{0.0} (p-value = 0.0078).
-Un valore di $W=0.0$ rappresenta la prova statistica estrema: in tutti gli 8 paesi esaminati, senza una singola eccezione, il numero cumulato di immigrati italiani dichiarati dal paese estero è sempre superiore alle cancellazioni ISTAT.
-Il \textbf{gap mediano su base quinquennale} tra le due fonti per ogni paese è di \textbf{4565.5} unità fantasma.
+La verifica di robustezza aggrega i flussi per paese sull'intero
+quinquennio ($N = 8$) e produce $W = 0.0$ con $p = 0.0078$. Il valore
+$W = 0.0$ indica che tutti e otto i paesi esaminati presentano, senza
+eccezioni, un gap di segno positivo (Eurostat $>$ ISTAT):
+\textbf{si rigetta $H_0$} a $\alpha = 0.05$ e $\alpha = 0.01$, mentre
+a $\alpha = 0.001$ il test non rigetta, coerentemente con la ridotta
+potenza statistica a $N = 8$. Il gap mediano cumulato per paese nel
+quinquennio è di $4565.5$ unità. La consistenza tra le due
+specificazioni conferma che il bias non è guidato dalla correlazione
+seriale intra-paese.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=\linewidth]{scripts/figures/fig3_heatmap}
-    \caption{Heatmap del tasso di sottostima. Celle scure evidenziano percentuali critiche di mancata registrazione.}
+    \caption{Heatmap del tasso di sottostima. Celle scure indicano
+    percentuali elevate di mancata registrazione.}
     \label{fig:heatmap}
 \end{figure}
 
-\subsection{Sfasamento Temporale: Test del Chi-Quadrato}
-L'applicazione del test del Chi-Quadrato ha dimostrato che i registri ISTAT non sono solo carenti nei volumi, ma anche scorretti nella distribuzione temporale.
-Rifiutando l'ipotesi nulla per soglie di confidenza rigorose ($\alpha=0.01$), l'analisi ha registrato anomalie estreme per specifiche destinazioni.
-La Spagna ($\chi^2 = 1814.088$), la Germania ($\chi^2 = 691.664$) e la Francia ($\chi^2 = 454.519$) presentano p-value di $0.000000$.
-L'unica nazione con un profilo cronologico lievemente più allineato è la Finlandia ($\chi^2 = 16.758$, che non rifiuta $H_0$ a $\alpha=0.001$).
-Questo significa che il ritardo burocratico della cancellazione AIRE distorce irrimediabilmente anche la comprensione di "quando" avvengono i deflussi.
+\subsection{Struttura del Bias: Test del Chi-Quadrato}
+Il test è applicato separatamente agli otto paesi ($k = 5$ anni,
+$\text{gdl} = 4$). In sette casi su otto il p-value risulta inferiore
+a $0.001$: \textbf{si rigetta $H_0$} a ogni livello di significatività
+considerato. Le anomalie più marcate si registrano per la Spagna
+($\chi^2 = 1814.088$), la Germania ($\chi^2 = 691.664$) e la Francia
+($\chi^2 = 454.519$).
 
-\begin{figure}[H]
+L'unica eccezione è la Finlandia ($\chi^2 = 16.758$): il test rigetta
+$H_0$ a $\alpha = 0.05$ e $\alpha = 0.01$, ma non a $\alpha = 0.001$.
+Il profilo cronologico finlandese è l'unico che si avvicina a quello
+di una sottostima proporzionalmente costante nel tempo.
+
+Per i restanti sette paesi il tasso di mancata registrazione varia
+da un anno all'altro: il ritardo anagrafico non è un offset fisso,
+ma un fenomeno con dinamica propria.
+
+\begin{figure}
     \centering
     \includegraphics[width=\linewidth]{scripts/figures/fig5_boxplot}
-    \caption{Boxplot della distribuzione del gap per paese: evidenzia le forti asimmetrie e l'impatto differenziale delle politiche di accoglienza locali.}
+    \caption{Boxplot della distribuzione del gap per paese: evidenzia
+    le asimmetrie tra stati e l'effetto differenziale delle procedure
+    anagrafiche locali.}
     \label{fig:boxplot}
 \end{figure}

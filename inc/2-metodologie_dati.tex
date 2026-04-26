@@ -1,0 +1,54 @@
+\section{Metodologie e Dati}\label{sec:metodologie_dati}
+
+\subsection{Costruzione e Filtraggio del Dataset}
+La costruzione del dataset è avvenuta in seguito all'individuazione di dati comparabili.
+
+In un primo momento, si voleva effettuare lo studio solo sulla fascia d'età 18-35.
+Tuttavia, a causa della mancanza di dati comparabili, e considerato che alcuni paesi analizzati fornivano solo dati aggregati, è stato deciso di estendere lo studio su tutta la popolazione emigrata, per entrambe le fonti di dati.
+
+Il dataset finale è il risultato di un processo di fusione di 40 record relativi al quinquennio 2017-2021 e ad otto paesi di destinazione chiave: Austria, Danimarca, Finlandia, Francia, Germania, Norvegia, Spagna, Svezia.
+I dati ISTAT provengono dalla rilevazione delle cancellazioni anagrafiche per trasferimento di residenza all'estero \cite{istat_iscrizioni}.
+La confrontabilità tra registri nazionali è garantita dal Regolamento (CE) 862/2007, che armonizza definizioni e metodologie di rilevazione delle statistiche migratorie negli Stati membri UE~\cite{ec_regulation_862_2007}.
+I dati speculari Eurostat sono stati estratti dal dataset \texttt{MIGR\_IMM1CTZ}, filtrato per includere solo gli immigrati con cittadinanza italiana \cite{eurostat_migr_imm1ctz}.
+
+\subsection{Tecniche Utilizzate}
+L'analisi è articolata su tre livelli di verifica, ciascuno progettato per rispondere a una domanda distinta sul divario tra le due fonti.
+\begin{enumerate}
+    \item \textbf{Verifica della Normalità (Test di Shapiro-Wilk):}
+    Il calcolo preliminare sui residui (il gap tra Eurostat e ISTAT)
+    ha restituito una statistica $W = 0.5978$ con un p-value di
+    $2.9 \times 10^{-9}$ \cite{shapiro_wilk1965}.
+    Il risultato rigetta categoricamente l'ipotesi di normalità
+    ($p < 0.05$), confermando che il divario non segue una distribuzione
+    gaussiana.
+    Di conseguenza, l'utilizzo di test non parametrici si è rivelato obbligatorio.
+
+    \item \textbf{Test di Wilcoxon Signed-Rank (presenza del bias):}
+    \paragraph{Ipotesi Nulla ($H_0$):} La mediana delle differenze tra Eurostat e ISTAT è zero (non c'è un bias sistematico).
+    \paragraph{Ipotesi Alternativa ($H_1$):} La mediana delle differenze è diversa da zero (esiste un bias sistematico).
+
+    Il test verifica se la mediana delle differenze per ogni coppia di dati
+    (Paese di destinazione (Eurostat) $-$ Italia (ISTAT)) sia uguale a zero, ovvero se esista un bias
+    sistematico tra le due fonti \cite{wilcoxon1945}.
+    L'analisi principale opera sul dataset
+    (8 paesi $\times$ 5 anni, $N = 40$).
+    Come verifica di robustezza, ripetiamo il test aggregando i flussi
+    per paese sull'intero quinquennio per Stato di destinazione ($N = 8$).
+
+    \item \textbf{Test del Chi-Quadrato ($\chi^2$) (struttura del bias):}
+    \paragraph{Ipotesi Nulla ($H_0$):} ISTAT segue la stessa distribuzione percentuale di Eurostat.
+    \paragraph{Ipotesi Alternativa ($H_1$):} Esiste una differenza significativa nella distribuzione temporale.
+
+    Mentre il Wilcoxon stabilisce \emph{se} ISTAT sottostima,
+    il $\chi^2$ indaga \emph{come} lo fa, ovvero se la sottostima
+    sia uniforme nel tempo o variabile tra gli anni.
+    Per isolare la forma della distribuzione temporale dal livello
+    assoluto, le frequenze attese sono costruite rinormalizzando la
+    distribuzione percentuale Eurostat sul totale ISTAT del paese:
+    il volume complessivo coincide per costruzione, e il test confronta
+    esclusivamente l'andamento cronologico.
+    Il rigetto di $H_0$ segnala che il tasso di mancata iscrizione
+    all'AIRE non è costante, ma oscilla da un anno all'altro,
+    caratteristica che preclude correzioni \emph{a posteriori}
+    mediante un semplice fattore moltiplicativo.
+\end{enumerate}

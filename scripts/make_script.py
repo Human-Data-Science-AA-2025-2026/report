@@ -1,6 +1,6 @@
 """
 generate_charts.py
-Genera i 5 grafici per il paper "The Invisible Exodus"
+Genera i 5 grafici per il paper "L'Esodo Invisibile" in italiano (SENZA TITOLI INTERNI)
 Input:  migration_gap.csv  (DESTINATION_STATE, YEAR, ISTAT_DELETED, DEST_REGISTERED)
 Output: figures/fig1_trend.pdf ... fig5_boxplot.pdf
 """
@@ -11,8 +11,11 @@ import matplotlib.ticker as mticker
 import seaborn as sns
 import numpy as np
 from pathlib import Path
+import os
 
 # Config
+# Assicuriamoci di essere nella cartella corretta per i path relativi
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 Path("figures").mkdir(exist_ok=True)
 
@@ -38,13 +41,13 @@ df["GAP_PCT"] = df["GAP"] / df["DEST_REGISTERED"] * 100
 
 COUNTRY_NAMES = {
     "AT": "Austria",
-    "DE": "Germany",
-    "DK": "Denmark",
-    "ES": "Spain",
-    "FI": "Finland",
-    "FR": "France",
-    "NO": "Norway",
-    "SE": "Sweden",
+    "DE": "Germania",
+    "DK": "Danimarca",
+    "ES": "Spagna",
+    "FI": "Finlandia",
+    "FR": "Francia",
+    "NO": "Norvegia",
+    "SE": "Svezia",
 }
 
 # Nomi leggibili per i paesi
@@ -57,24 +60,23 @@ def figure_1():
     fig, ax = plt.subplots(figsize=(8, 4.5))
     ax.set_xticks(np.arange(min(annual["YEAR"]), max(annual["YEAR"]) + 1))
     ax.plot(annual["YEAR"], annual["DEST_REGISTERED"],
-            color=PALETTE, lw=2.2, marker="o", ms=10, label="Destination countries (Eurostat)")
+            color=PALETTE, lw=2.2, marker="o", ms=10, label="Paesi di destinazione (Eurostat)")
     ax.plot(annual["YEAR"], annual["ISTAT_DELETED"],
             color=ACCENT, lw=2.2, marker="s", ms=10, linestyle="--", label="ISTAT / AIRE")
     ax.fill_between(annual["YEAR"], annual["ISTAT_DELETED"], annual["DEST_REGISTERED"],
-                    alpha=0.12, color=ACCENT, label="Gap area")
+                    alpha=0.12, color=ACCENT, label="Area del gap")
 
     ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, _: f"{int(x):,}"))
-    ax.set_xlabel("Year")
-    ax.set_ylabel("Emigration flows (total)")
-    ax.set_title("Figure 1: Aggregate emigration flows: ISTAT vs destination countries", pad=12)
+    ax.set_xlabel("Anno")
+    ax.set_ylabel("Flussi di emigrazione (totali)")
     ax.legend(frameon=False)
     fig.tight_layout()
     fig.savefig("figures/fig1_trend.pdf")
     fig.savefig("figures/fig1_trend.png")
     plt.close()
-    print("Fig 1 saved")
+    print("Fig 1 salvata")
 
-# Fig 2 - Gap by country
+# Fig 2 - Gap per paese
 def figure_2():
     by_country = (df.groupby("COUNTRY")
                   .agg(GAP_PCT_MEAN=("GAP_PCT", "mean"),
@@ -91,14 +93,13 @@ def figure_2():
                 f"{val:.1f}%", va="center", fontsize=9.5, color=PALETTE)
 
     ax.axvline(0, color=GREY, lw=0.8)
-    ax.set_xlabel("Average gap (%): (Eurostat − ISTAT) / Eurostat")
-    ax.set_title("Figure 2: Mean undercount rate by destination country", pad=12)
+    ax.set_xlabel("Gap medio (%): (Eurostat − ISTAT) / Eurostat")
     ax.xaxis.set_major_formatter(mticker.FuncFormatter(lambda x, _: f"{x:.0f}%"))
     fig.tight_layout()
     fig.savefig("figures/fig2_gap_by_country.pdf")
     fig.savefig("figures/fig2_gap_by_country.png")
     plt.close()
-    print("Fig 2 saved")
+    print("Fig 2 salvata")
 
 # Fig 3 - Heatmap
 def figure_3():
@@ -113,45 +114,44 @@ def figure_3():
                 cbar_kws={"label": "Gap (%)", "shrink": 0.7},
                 annot_kws={"size": 9})
 
-    ax.set_xlabel("Year")
+    ax.set_xlabel("Anno")
     ax.set_ylabel("")
-    ax.set_title("Figure 3: Undercount rate (%) by country and year", pad=12)
     ax.tick_params(axis="x", rotation=45)
     ax.tick_params(axis="y", rotation=0)
     fig.tight_layout()
     fig.savefig("figures/fig3_heatmap.pdf")
     fig.savefig("figures/fig3_heatmap.png")
     plt.close()
-    print("Fig 3 saved")
+    print("Fig 3 salvata")
 
 # Fig 4 - Tabella riepilogativa
 def figure_4():
     stats = (df.groupby("COUNTRY")
              .agg(
-        Years=("YEAR", "count"),
-        ISTAT_total=("ISTAT_DELETED", "sum"),
-        DEST_total=("DEST_REGISTERED", "sum"),
-        Gap_mean=("GAP", "mean"),
-        Gap_pct_mean=("GAP_PCT", "mean"),
+        Anni=("YEAR", "count"),
+        Totale_ISTAT=("ISTAT_DELETED", "sum"),
+        Totale_DEST=("DEST_REGISTERED", "sum"),
+        Gap_medio=("GAP", "mean"),
+        Gap_pct_media=("GAP_PCT", "mean"),
         Gap_pct_std=("GAP_PCT", "std"),
     )
              .reset_index()
-             .sort_values("Gap_pct_mean", ascending=False))
+             .sort_values("Gap_pct_media", ascending=False))
 
     stats_display = stats.copy()
-    stats_display["ISTAT_total"] = stats_display["ISTAT_total"].map(lambda x: f"{int(x):,}")
-    stats_display["DEST_total"] = stats_display["DEST_total"].map(lambda x: f"{int(x):,}")
-    stats_display["Gap_mean"] = stats_display["Gap_mean"].map(lambda x: f"{int(x):,}")
-    stats_display["Gap_pct_mean"] = stats_display["Gap_pct_mean"].map(lambda x: f"{x:.1f}%")
+    stats_display["Totale_ISTAT"] = stats_display["Totale_ISTAT"].map(lambda x: f"{int(x):,}")
+    stats_display["Totale_DEST"] = stats_display["Totale_DEST"].map(lambda x: f"{int(x):,}")
+    stats_display["Gap_medio"] = stats_display["Gap_medio"].map(lambda x: f"{int(x):,}")
+    stats_display["Gap_pct_media"] = stats_display["Gap_pct_media"].map(lambda x: f"{x:.1f}%")
     stats_display["Gap_pct_std"] = stats_display["Gap_pct_std"].map(lambda x: f"{x:.1f}%")
     stats_display = stats_display.rename(columns={
-        "COUNTRY": "Country",
-        "Years": "N years",
-        "ISTAT_total": "ISTAT total",
-        "DEST_total": "Dest. total",
-        "Gap_mean": "Avg gap",
-        "Gap_pct_mean": "Gap % (mean)",
-        "Gap_pct_std": "Gap % (std)",
+        "COUNTRY": "Paese",
+        "Anni": "N. anni",
+        "Totale_ISTAT": "Totale ISTAT",
+        "Totale_DEST": "Totale Dest.",
+        "Gap_medio": "Gap medio",
+        "Gap_pct_media": "Gap % (media)",
+        "Gap_pct_std": "Gap % (dev. std.)",
     })
 
     fig, ax = plt.subplots(figsize=(11, 0.45 * len(stats_display) + 1.8))
@@ -176,13 +176,11 @@ def figure_4():
         for j in range(len(stats_display.columns)):
             tbl[i, j].set_facecolor(color)
 
-    ax.set_title("Table 1: Summary statistics by destination country",
-                 pad=14, fontsize=11, fontweight="bold")
     fig.tight_layout()
     fig.savefig("figures/fig4_table.pdf")
     fig.savefig("figures/fig4_table.png")
     plt.close()
-    print("Fig 4 saved")
+    print("Fig 4 salvata")
 
 # Fig 5 - Boxplot
 def figure_5():
@@ -204,20 +202,19 @@ def figure_5():
     )
 
     ax.axhline(0, color=GREY, lw=0.8, linestyle="--")
-    ax.set_ylabel("Gap (%): per country-year observation")
-    ax.set_xlabel("Country")
-    ax.set_title("Figure 5: Distribution of undercount rate per country", pad=12)
+    ax.set_ylabel("Gap (%): per osservazione paese-anno")
+    ax.set_xlabel("Paese")
     ax.tick_params(axis="x", rotation=30)
     fig.tight_layout()
     fig.savefig("figures/fig5_boxplot.pdf")
     fig.savefig("figures/fig5_boxplot.png")
     plt.close()
-    print("Fig 5 saved")
+    print("Fig 5 salvata")
 
-figure_1()
-figure_2()
-figure_3()
-figure_4()
-figure_5()
-
-print("\nDone. Files in ./figures/")
+if __name__ == "__main__":
+    figure_1()
+    figure_2()
+    figure_3()
+    figure_4()
+    figure_5()
+    print("\nFine. File salvati in ./figures/")

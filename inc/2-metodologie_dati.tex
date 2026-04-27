@@ -9,7 +9,7 @@ Tuttavia, a causa della mancanza di dati comparabili, e considerato che alcuni p
 Il dataset finale è il risultato di un processo di fusione di 40 record relativi al quinquennio 2017-2021 e ad otto paesi di destinazione chiave: Austria, Danimarca, Finlandia, Francia, Germania, Norvegia, Spagna, Svezia.
 I dati ISTAT provengono dalla rilevazione delle cancellazioni anagrafiche per trasferimento di residenza all'estero \cite{istat_iscrizioni}.
 La confrontabilità tra registri nazionali è garantita dal Regolamento (CE) 862/2007, che armonizza definizioni e metodologie di rilevazione delle statistiche migratorie negli Stati membri UE~\cite{ec_regulation_862_2007}.
-I dati speculari Eurostat sono stati estratti dal dataset \texttt{MIGR\_IMM1CTZ}, filtrato per includere solo gli immigrati con cittadinanza italiana \cite{eurostat_migr_imm1ctz}.
+I dati speculari Eurostat sono stati estratti dal dataset \texttt{MIGR\_IMM1CTZ}, filtrato per includere solo gli immigrati con cittadinanza italiana~\cite{eurostat_migr_imm1ctz}.
 
 \subsection{Tecniche Utilizzate}
 L'analisi è articolata su tre livelli di verifica, ciascuno progettato per rispondere a una domanda distinta sul divario tra le due fonti.
@@ -17,10 +17,10 @@ L'analisi è articolata su tre livelli di verifica, ciascuno progettato per risp
     \item \textbf{Verifica della Normalità (Test di Shapiro-Wilk):}
     Il calcolo preliminare sui residui (il gap tra Eurostat e ISTAT)
     ha restituito una statistica $W = 0.5978$ con un p-value di
-    $2.9 \times 10^{-9}$ \cite{shapiro_wilk1965}.
+    $2.9 \times 10^{-9}$.
     Il risultato rigetta categoricamente l'ipotesi di normalità
     ($p < 0.05$), confermando che il divario non segue una distribuzione
-    gaussiana.
+    gaussiana~\cite{shapiro_wilk1965}.
     Di conseguenza, l'utilizzo di test non parametrici si è rivelato obbligatorio.
 
     \item \textbf{Test di Wilcoxon Signed-Rank (presenza del bias):}

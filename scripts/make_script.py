@@ -2,7 +2,7 @@
 generate_charts.py
 Genera i 5 grafici per il paper "L'Esodo Invisibile" in italiano (SENZA TITOLI INTERNI)
 Input:  migration_gap.csv  (DESTINATION_STATE, YEAR, ISTAT_DELETED, DEST_REGISTERED)
-Output: figures/fig1_trend.pdf ... fig5_boxplot.pdf
+Output: figures/fig_trend.pdf ... fig5_boxplot.pdf
 """
 
 import pandas as pd
@@ -71,8 +71,8 @@ def figure_1():
     ax.set_ylabel("Flussi di emigrazione (totali)")
     ax.legend(frameon=False)
     fig.tight_layout()
-    fig.savefig("figures/fig1_trend.pdf")
-    fig.savefig("figures/fig1_trend.png")
+    fig.savefig("figures/fig_trend.pdf")
+    fig.savefig("figures/fig_trend.png")
     plt.close()
     print("Fig 1 salvata")
 
@@ -96,8 +96,8 @@ def figure_2():
     ax.set_xlabel("Gap medio (%): (Eurostat − ISTAT) / Eurostat")
     ax.xaxis.set_major_formatter(mticker.FuncFormatter(lambda x, _: f"{x:.0f}%"))
     fig.tight_layout()
-    fig.savefig("figures/fig2_gap_by_country.pdf")
-    fig.savefig("figures/fig2_gap_by_country.png")
+    fig.savefig("figures/fig_gap_by_country.pdf")
+    fig.savefig("figures/fig_gap_by_country.png")
     plt.close()
     print("Fig 2 salvata")
 
@@ -119,8 +119,8 @@ def figure_3():
     ax.tick_params(axis="x", rotation=45)
     ax.tick_params(axis="y", rotation=0)
     fig.tight_layout()
-    fig.savefig("figures/fig3_heatmap.pdf")
-    fig.savefig("figures/fig3_heatmap.png")
+    fig.savefig("figures/fig_heatmap.pdf")
+    fig.savefig("figures/fig_heatmap.png")
     plt.close()
     print("Fig 3 salvata")
 
@@ -177,8 +177,8 @@ def figure_4():
             tbl[i, j].set_facecolor(color)
 
     fig.tight_layout()
-    fig.savefig("figures/fig4_table.pdf")
-    fig.savefig("figures/fig4_table.png")
+    fig.savefig("figures/fig_table.pdf")
+    fig.savefig("figures/fig_table.png")
     plt.close()
     print("Fig 4 salvata")
 
@@ -206,8 +206,8 @@ def figure_5():
     ax.set_xlabel("Paese")
     ax.tick_params(axis="x", rotation=30)
     fig.tight_layout()
-    fig.savefig("figures/fig5_boxplot.pdf")
-    fig.savefig("figures/fig5_boxplot.png")
+    fig.savefig("figures/fig_boxplot.pdf")
+    fig.savefig("figures/fig_boxplot.png")
     plt.close()
     print("Fig 5 salvata")
 

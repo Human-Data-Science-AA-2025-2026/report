@@ -19,14 +19,14 @@ a $\alpha = 0.001$ il test non rigetta, a causa della bassa potenza statistica a
 Il gap mediano cumulato per paese nel quinquennio è di $4565.5$ unità.
 I dati aggregati per paese sono visibili nella Figura~\ref{fig:table}, inoltre, la heatmap in Figura~\ref{fig:heatmap} mostra i gap percentuali paese per paese ed anno per anno.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{scripts/figures/fig_table}
     \caption{Dati aggregati per paese.}
     \label{fig:table}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{scripts/figures/fig_heatmap}
     \caption{Heatmap rappresentante la percentuale del gap fra le cancellazioni delle residenze rilevate dall'istat e le immigrazioni nei paesi ospitanti registrate dall'eurostat}
@@ -50,10 +50,10 @@ Per i restanti sette paesi il tasso di mancata registrazione varia
 da un anno all'altro: il ritardo anagrafico non è un offset fisso,
 ma un fenomeno con dinamica propria.
 
-Il trend aggregato di tutti i paesi è visibile in Figura~\ref{fig:trend}, inoltre, la media dei gap è visibile in Figura~\ref{fig:gap_by_contry} è stato anche aggiunto un grafico boxplot che aiuta a capire come sono sparsi i dati intorno la media, grafico in Figura~\ref{fig:boxplot}
+Il trend aggregato di tutti i paesi è visibile in Figura~\ref{fig:trend}, inoltre, un boxplot che aiuta a capire come sono sparsi i dati intorno la media, grafico in Figura~\ref{fig:boxplot}
 
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{scripts/figures/fig_trend}
     \caption{Trend dei flussi migratori aggregati (2017-2021):
@@ -62,20 +62,11 @@ Il trend aggregato di tutti i paesi è visibile in Figura~\ref{fig:trend}, inolt
     \label{fig:trend}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{scripts/figures/fig_boxplot}
     \caption{Boxplot della distribuzione del gap per paese: evidenzia
     le asimmetrie tra stati e l'effetto differenziale delle procedure
     anagrafiche locali.}
     \label{fig:boxplot}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\linewidth]{scripts/figures/fig_gap_by_country}
-    \caption{Boxplot della distribuzione del gap per paese: evidenzia
-    le asimmetrie tra stati e l'effetto differenziale delle procedure
-    anagrafiche locali.}
-    \label{fig:gap_by_contry}
 \end{figure}

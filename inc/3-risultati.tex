@@ -1,72 +1,83 @@
 \section{Risultati}\label{sec:risultati}
-Le analisi restituiscono un quadro coerente nelle due direzioni previste
-dai test: esiste un bias sistematico nei volumi e un disallineamento
-strutturato nella distribuzione temporale.
+
+Le analisi condotte delineano un quadro empirico coerente con le ipotesi di ricerca, confermando una duplice criticità nei dati migratori: l'esistenza di un bias sistematico nell'entità dei volumi e una divergenza strutturale nella loro distribuzione temporale.
+
+In via preliminare, la distribuzione dei gap tra le rilevazioni Eurostat e ISTAT è stata sottoposta al test di Shapiro-Wilk per verificarne la normalità. 
+Il risultato ($W = 0.5978, p \approx 2.9 \times 10^{-9}$) ha permesso di rigettare con ampio margine l'ipotesi di normalità, legittimando e rendendo necessario l'impiego del test non parametrico di Wilcoxon per le analisi successive.
 
 \subsection{Entità del Bias: Test di Wilcoxon}
-Sul dataset ($N = 40$) il test restituisce $W = 34.0$ con
-$p = 4.3 \times 10^{-7}$. Il p-value è inferiore a tutte le soglie
-considerate ($\alpha = 0.05, 0.01, 0.001$): \textbf{si rigetta $H_0$}
-al livello più rigoroso.
-Il gap mediano per singola combinazione paese-anno è di $918.5$ unità.
 
-La verifica di robustezza aggrega i flussi per paese sull'intero
-quinquennio ($N = 8$) e produce $W = 0.0$ con $p = 0.0078$.
-Il valore $W = 0.0$ indica che tutti e otto i paesi esaminati presentano, senza
-eccezioni, un gap di segno positivo (Eurostat $>$ ISTAT):
-\textbf{si rigetta $H_0$} a $\alpha = 0.05$ e $\alpha = 0.01$, mentre
-a $\alpha = 0.001$ il test non rigetta, a causa della bassa potenza statistica a $N = 8$.
-Il gap mediano cumulato per paese nel quinquennio è di $4565.5$ unità.
-I dati aggregati per paese sono visibili nella Figura~\ref{fig:table}, inoltre, la heatmap in Figura~\ref{fig:heatmap} mostra i gap percentuali paese per paese ed anno per anno.
+L'analisi condotta sul dataset globale ($N = 40$) tramite il test di Wilcoxon ha restituito una statistica $W = 34.0$ con un p-value di $4.3 \times 10^{-7}$. 
+Tale evidenza permette di rigettare l'ipotesi nulla $H_0$ ai livelli di significatività più stringenti ($\alpha = 0.05, 0.01, 0.001$), evidenziando un gap mediano di $918.5$ unità per singola combinazione paese-anno.
+
+Dal punto di vista interpretativo, la statistica $W$ rappresenta il valore minimo tra la somma dei ranghi positivi e negativi. 
+Considerando 40 osservazioni, la somma totale dei ranghi è pari a 820; sotto l'ipotesi nulla (assenza di bias), il valore atteso sarebbe $W \approx 410$. 
+Un risultato di $34.0$ risulta pertanto estremamente esiguo, indicando che nella quasi totalità delle osservazioni Eurostat registra valori sistematicamente superiori a ISTAT ($Z \approx 5.05$).
+
+La verifica di robustezza, effettuata aggregando i flussi per nazione sull'intero quinquennio ($N = 8$), ha confermato la solidità del fenomeno producendo un valore $W = 0.0$ ($p = 0.0078$). 
+Questo risultato è particolarmente significativo: indica che, senza alcuna eccezione negli otto paesi analizzati, il volume totale registrato da Eurostat è superiore a quello ISTAT. 
+In questo scenario, \textbf{si rigetta $H_0$} per $\alpha = 0.05$ e $\alpha = 0.01$; il mancato rifiuto di $\alpha = 0.001$ può essere attribuito alla ridotta potenza statistica legata all'esiguità del campione ($N = 8$). 
+Il gap mediano cumulato per paese nel quinquennio è risultato pari a $4565.5$ unità.
+
+La distribuzione spaziale del gap è illustrata nella Figura~\ref{fig:table}, mentre la heatmap in Figura~\ref{fig:heatmap} dettaglia le discrepanze percentuali per ogni combinazione stato-anno, permettendo di visualizzare l'intensità del fenomeno.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{scripts/figures/fig_table}
-    \caption{Dati aggregati per paese.}
+    \caption{Riepilogo dei dati aggregati per nazione.}
     \label{fig:table}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{scripts/figures/fig_heatmap}
-    \caption{Heatmap rappresentante la percentuale del gap fra le cancellazioni delle residenze rilevate dall'istat e le immigrazioni nei paesi ospitanti registrate dall'eurostat}
+    \caption{Heatmap del gap percentuale: confronto tra cancellazioni ISTAT e immigrazioni Eurostat.}
     \label{fig:heatmap}
 \end{figure}
 
 \subsection{Struttura del Bias: Test del Chi-Quadrato}
-Il test è applicato separatamente agli otto paesi ($k = 5$ anni).
-In sette casi su otto il p-value risulta inferiore
-a $0.001$: \textbf{si rigetta $H_0$} a ogni livello di significatività
-considerato. Le anomalie più marcate si registrano per la Spagna
-($\chi^2 = 1814.088$), la Germania ($\chi^2 = 691.664$) e la Francia
-($\chi^2 = 454.519$).
 
-L'unica eccezione è la Finlandia ($\chi^2 = 16.758$): il test rigetta
-$H_0$ a $\alpha = 0.05$ e $\alpha = 0.01$, ma non a $\alpha = 0.001$.
-Il profilo cronologico finlandese è l'unico che si avvicina a quello
-di una sottostima proporzionalmente costante nel tempo.
+Per indagare se il bias di sottostima fosse costante o variabile nel tempo, è stato applicato il test del Chi-quadrato singolarmente per ognuno degli otto paesi ($k = 5$ anni). 
+I risultati (Tabella~\ref{tab:chi2}) mostrano che in sette casi su otto il p-value è inferiore a $0.001$, portando al rifiuto di $H_0$ per ogni livello di significatività. 
+Le anomalie più marcate nella distribuzione temporale si registrano in Spagna ($\chi^2 = 1814.088$), Germania ($\chi^2 = 691.664$) e Francia ($\chi^2 = 454.519$).
 
-Per i restanti sette paesi il tasso di mancata registrazione varia
-da un anno all'altro: il ritardo anagrafico non è un offset fisso,
-ma un fenomeno con dinamica propria.
+L'unica eccezione rilevante è rappresentata dalla Finlandia ($\chi^2 = 16.758$): in questo caso il test rigetta $H_0$ a $\alpha = 0.05$ e $0.01$, ma non a $\alpha = 0.001$. 
+La Finlandia è l'unico paese a mostrare una dinamica di sottostima proporzionalmente più stabile nel tempo.
 
-Il trend aggregato di tutti i paesi è visibile in Figura~\ref{fig:trend}, inoltre, un boxplot che aiuta a capire come sono sparsi i dati intorno la media, grafico in Figura~\ref{fig:boxplot}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l c c c c c}
+        \hline
+        \textbf{Paese} & $\boldsymbol{\chi^2}$ \textbf{Stat} & \textbf{p-value} & \textbf{Rif. $H_0$ (0.05)} & \textbf{Rif. $H_0$ (0.01)} & \textbf{Rif. $H_0$ (0.001)} \\
+        \hline
+        AT             & 66.960                              & $<0.001$         & Sì                         & Sì                         & Sì                          \\
+        DE             & 691.664                             & $<0.001$         & Sì                         & Sì                         & Sì                          \\
+        DK             & 170.624                             & $<0.001$         & Sì                         & Sì                         & Sì                          \\
+        ES             & 1814.088                            & $<0.001$         & Sì                         & Sì                         & Sì                          \\
+        FI             & 16.758                              & $0.00215$        & Sì                         & Sì                         & No                          \\
+        FR             & 454.519                             & $<0.001$         & Sì                         & Sì                         & Sì                          \\
+        NO             & 65.772                              & $<0.001$         & Sì                         & Sì                         & Sì                          \\
+        SE             & 91.530                              & $<0.001$         & Sì                         & Sì                         & Sì                          \\
+        \hline
+    \end{tabular}
+    \caption{Risultati del test del Chi-quadrato per la verifica della stabilità temporale del bias.}
+    \label{tab:chi2}
+\end{table}
 
+Per la maggior parte dei paesi analizzati, dunque, il tasso di mancata registrazione non è un valore fisso, ma fluttua annualmente: ciò suggerisce che il ritardo anagrafico non agisce come un semplice errore di misura costante, ma segue dinamiche proprie influenzate probabilmente da fattori amministrativi o altre variabili.
+
+Tale andamento è confermato dal trend aggregato mostrato in Figura~\ref{fig:trend} e dalla dispersione dei dati evidenziata nel boxplot di Figura~\ref{fig:boxplot}, che sottolinea le asimmetrie tra gli stati.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{scripts/figures/fig_trend}
-    \caption{Trend dei flussi migratori aggregati (2017-2021):
-    l'area ombreggiata quantifica il divario tra le registrazioni
-    Eurostat (superiori) e le cancellazioni ISTAT.}
+    \caption{Evoluzione dei flussi migratori (2017-2021): l'area ombreggiata evidenzia l'entità del divario tra Eurostat e ISTAT.}
     \label{fig:trend}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{scripts/figures/fig_boxplot}
-    \caption{Boxplot della distribuzione del gap per paese: evidenzia
-    le asimmetrie tra stati e l'effetto differenziale delle procedure
-    anagrafiche locali.}
+    \caption{Boxplot della distribuzione dei gap per paese: analisi della dispersione e delle asimmetrie.}
     \label{fig:boxplot}
 \end{figure}

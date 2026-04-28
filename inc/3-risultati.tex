@@ -1,25 +1,27 @@
 \section{Risultati}\label{sec:risultati}
 
-Le analisi condotte delineano un quadro empirico coerente con le ipotesi di ricerca, confermando una duplice criticità nei dati migratori: l'esistenza di un bias sistematico nell'entità dei volumi e una divergenza strutturale nella loro distribuzione temporale.
+I risultati delle analisi effettuate, sono coerenti con le ipotesi dello studio, confermando una duplice criticità nei dati migratori: l'esistenza di un bias sistematico nell'entità dei volumi con differenze strutturali anche la loro distribuzione nel tempo.
 
 In via preliminare, la distribuzione dei gap tra le rilevazioni Eurostat e ISTAT è stata sottoposta al test di Shapiro-Wilk per verificarne la normalità. 
-Il risultato ($W = 0.5978, p \approx 2.9 \times 10^{-9}$) ha permesso di rigettare con ampio margine l'ipotesi di normalità, legittimando e rendendo necessario l'impiego del test non parametrico di Wilcoxon per le analisi successive.
+Il risultato ($W = 0.5978, p \approx 2.9 \times 10^{-9}$) ha permesso di rigettare l'ipotesi di nulla, legittimando e rendendo necessario l'impiego del test non parametrico di Wilcoxon per le analisi successive.
 
 \subsection{Entità del Bias: Test di Wilcoxon}
 
-L'analisi condotta sul dataset globale ($N = 40$) tramite il test di Wilcoxon ha restituito una statistica $W = 34.0$ con un p-value di $4.3 \times 10^{-7}$. 
+L'analisi condotta sul dataset globale ($N = 40$) tramite il test di Wilcoxon ha restituito una statistica $W = 34.0$ con un p-value di $4.3 \times 10^{-7}$.
 Tale evidenza permette di rigettare l'ipotesi nulla $H_0$ ai livelli di significatività più stringenti ($\alpha = 0.05, 0.01, 0.001$), evidenziando un gap mediano di $918.5$ unità per singola combinazione paese-anno.
 
 Dal punto di vista interpretativo, la statistica $W$ rappresenta il valore minimo tra la somma dei ranghi positivi e negativi. 
 Considerando 40 osservazioni, la somma totale dei ranghi è pari a 820; sotto l'ipotesi nulla (assenza di bias), il valore atteso sarebbe $W \approx 410$. 
 Un risultato di $34.0$ risulta pertanto estremamente esiguo, indicando che nella quasi totalità delle osservazioni Eurostat registra valori sistematicamente superiori a ISTAT ($Z \approx 5.05$).
 
+Sapendo che in una distribuzione normale il 99,73\% dei dati si trova nel range $Z \in [-3, 3]$ possiamo dire che un valore $Z > 5$ corrisponde a un dato anomalo.
+
 La verifica di robustezza, effettuata aggregando i flussi per nazione sull'intero quinquennio ($N = 8$), ha confermato la solidità del fenomeno producendo un valore $W = 0.0$ ($p = 0.0078$). 
 Questo risultato è particolarmente significativo: indica che, senza alcuna eccezione negli otto paesi analizzati, il volume totale registrato da Eurostat è superiore a quello ISTAT. 
 In questo scenario, \textbf{si rigetta $H_0$} per $\alpha = 0.05$ e $\alpha = 0.01$; il mancato rifiuto di $\alpha = 0.001$ può essere attribuito alla ridotta potenza statistica legata all'esiguità del campione ($N = 8$). 
 Il gap mediano cumulato per paese nel quinquennio è risultato pari a $4565.5$ unità.
 
-La distribuzione spaziale del gap è illustrata nella Figura~\ref{fig:table}, mentre la heatmap in Figura~\ref{fig:heatmap} dettaglia le discrepanze percentuali per ogni combinazione stato-anno, permettendo di visualizzare l'intensità del fenomeno.
+I dati aggregati, raggruppati per Stato di destinazione sono mostrati nella Figura~\ref{fig:table}, mentre la heatmap in Figura~\ref{fig:heatmap} dettaglia le discrepanze percentuali per ogni combinazione stato-anno, permettendo di visualizzare l'intensità del fenomeno.
 
 \begin{figure}[H]
     \centering
